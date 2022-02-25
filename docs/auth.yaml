@@ -1,0 +1,76 @@
+paths:
+  /auth/login:
+    post:
+      tags:
+      - "auth"
+      summary: "Login into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "formData"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "The password for login"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+        422:
+          description: "Unprocessable Entity"
+        403:
+          description: "Forbidden"
+        500:
+          description: "Internal Server Error"
+  /auth:
+    get:
+      tags:
+      - "auth"
+      summary: "Get auth user details"
+      description: "This can only be done by the logged in users."
+      operationId: "getAuthUser"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful"
+        422:
+          description: "Unprocessable Entity"
+        403:
+          description: "Forbidden"
+        500:
+          description: "Internal Server Error"
+      security:
+      - AUTHORIZATION: []
+  /auth/refresh-token:
+    get:
+      tags:
+      - "auth"
+      summary: "Refresh auth token"
+      description: "This can only be done by the logged in users."
+      operationId: "refreshAuthToken"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "AUTHORIZATION"
+        in: "header"
+        required: true
+        type: "string"
+        description: "You have to send [refresh_token] as AUTHORIZATION."
+      responses:
+        200:
+          description: "successful"
+        422:
+          description: "Unprocessable Entity"
+        403:
+          description: "Forbidden"
+        500:
+          description: "Internal Server Error"
+      security:
+      - AUTHORIZATION: []

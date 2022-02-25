@@ -2,13 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./src/config/swagger');
 const app = express();
 const port = process.env.PORT || 4000;
 const { checkApiKey, checkAuth } = require('./src/helpers/common');
 const errorHandler = require('./src/helpers/error_handler');
 const AuthRoute = require('./src/routes/auth');
 const UserRoute = require('./src/routes/user');
-const PageRoute = require('./src/routes/page');
+const PostRoute = require('./src/routes/post');
+
+const apiBase = process.env.BASE_PATH || '/api/v1';
 
 //allow cors
 app.use(cors());
@@ -25,17 +29,19 @@ app.use(bodyParser.json());
 // allow api code file
 app.use(express.static('public'));
 
-// define middleware for api key
-//app.use(checkApiKey);
-app.get('/test', (req, res) =>
+app.get(`${apiBase}/hello`, (req, res) =>
   res.send({ status: true, data: 'Hello World!' })
 );
+
+// define middleware for api key
+app.use(checkApiKey);
+
 // define auth route
-app.use('/auth', AuthRoute);
+app.use(`${apiBase}/auth`, AuthRoute);
 // define user route
-app.use('/users', UserRoute);
+app.use(`${apiBase}/users`, UserRoute);
 // define user route
-app.use('/pages', PageRoute);
+app.use(`${apiBase}/posts`, PostRoute);
 // global error handler
 app.use(errorHandler);
 // listen for requests

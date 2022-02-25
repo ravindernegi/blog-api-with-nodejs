@@ -1,0 +1,102 @@
+paths:
+  /users:
+    get:
+      tags:
+      - "users"
+      summary: "Gell all users"
+      description: "This can only be done by the logged in users."
+      operationId: "getUsers"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "Access items page wise"
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "How many items want to see on each page"
+        type: "string"
+      - name: "search"
+        in: "query"
+        description: "Search Keyword"
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+        422:
+          description: "Unprocessable Entity"
+        403:
+          description: "Forbidden"
+        500:
+          description: "Internal Server Error"
+      security:
+      - AUTHORIZATION: []
+  /users/{id}:
+    get:
+      tags:
+      - "users"
+      summary: "Find User by ID"
+      description: "This can only be done by the logged in users."
+      operationId: "getUserById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of auth to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+        422:
+          description: "Unprocessable Entity"
+        403:
+          description: "Forbidden"
+        500:
+          description: "Internal Server Error"
+      security:
+      - AUTHORIZATION: []
+definitions:
+  User:
+    type: "object"
+    required:
+    - "username"
+    - "first_name"
+    - "last_name"
+    - "password"
+    - "email"
+    properties:
+      id:
+        type: "string"
+      username:
+        type: "string"
+      first_name:
+        type: "string"
+      last_name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      image:
+        type: "string"
+      role:
+         type: "string"
+         default: 'admin'
+      status:
+        type: "string"
+        enum: ["active", "inactive"]
+        default: 'active'
+      isdeleted:
+        type: "boolean"
+        default: false
+      created_at:
+        type: "string"
+        description: "current date & time. once record add"
+      updated_at:
+        type: "string"
+        description: "current date & time. once record update"
